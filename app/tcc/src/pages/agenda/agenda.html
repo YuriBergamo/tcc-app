@@ -1,0 +1,29 @@
+<ion-header>
+  <div class="background-faixa" ></div>
+  <ion-navbar color="primary">
+    <ion-title>Agenda</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Data</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY"  pickerFormat="DD/MM/YYYY" [(ngModel)]="dataSelecionada" (ionChange)="atualizarAgendamentos()"></ion-datetime>
+      <button margin-left="5px;" ion-button item-right color="accent" icon-left round (click)="exibirTodos()">
+        <ion-icon name="open" ></ion-icon>
+        Todos
+      </button>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item *ngFor="let agenda of listaAgendamentosPorData">
+      <h2><ion-icon color="accent" name="create" item-left></ion-icon>Consulta/Retorno</h2>
+      <h3> <ion-icon color="accent" name="pin" item-left></ion-icon>Dr. João</h3>
+      <p>Descrição da consulta</p>
+      <ion-note item-right>10/10/2017</ion-note><!--{{agenda.agenda.dataInicioAgenda | date:'dd/MM/yyyy'}}</ion-note> -->
+    </ion-item>
+  </ion-list>
+  <ion-fab bottom right>
+    <button color="accent" ion-fab (click)="addAgendamento()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

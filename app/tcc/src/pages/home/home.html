@@ -1,0 +1,39 @@
+<ion-header>
+  <div class="background-faixa" ></div>
+  <ion-navbar color="primary">
+    <ion-title>Notícias</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-card style="background: #ffffff;">
+      <ion-item style="background: #ffffff">
+        <h1>Título da Notícia</h1>
+      </ion-item>
+      <img class="img-noticias" [src]="buscarProximaImg()" >
+      <ion-card-content style="background: #ffffff">
+        <p align="justify">Texto da noticia que sera publicado aqui...</p>
+      </ion-card-content>
+      <ion-row style="background: #ffffff">
+        <ion-col>
+          <button color="accent" ion-button clear small>
+            <ion-icon name="star"></ion-icon>
+            <div>Favoritar</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button color="accent" ion-button clear small>
+            <ion-icon name="share"></ion-icon>
+            <div>Share</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h atrás
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-list>
+</ion-content>
