@@ -1,57 +1,117 @@
 var express = require('express');
 var router = express.Router();
+var PadraoRoute = require('./padrao_route');
 
 var Usuario = require('../models/Usuario');
 
-/* GET users listing. */
+/* retorna uma lista com todos os usuarios */
 router.get('/', function(req, res, next) {
-  Usuario.find({}, function(err, usuarios){
-      if(err){
-         console.log("Err", err);
-         return retornaErro(res, "Erro ao buscar os usuarios");
-      }
-      return retornaSucess(res, usuarios);
-  });
+  try{
+      Usuario.find({}, function(err, usuarios){
+        if(err){
+          console.log("USER ROUTE - ERROR - FIND USUARIO", err);
+          return PadraoRoute.error(res, "Erro ao buscar os usuarios");
+        }
+        return PadraoRoute.sucess(res, usuarios);
+    });
+  }catch(e){
+    console.log("USER ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
+  }
+});
+
+/* retorna uma lista com todos os usuarios de um determinado tipo */
+router.get('/:tipo', function(req, res, next) {
+  try{
+    Usuario.find({tipo:req.params.tipo}, function(err, usuarios){
+        if(err){
+            console.log("USER ROUTE - ERROR - FIND USUARIO TIPO", err);
+            return PadraoRoute.error(res, "Erro ao buscar os usuarios");
+        }
+        return PadraoRoute.sucess(res, usuarios);
+    });
+  }catch(e){
+    console.log("USER ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
+  }
 });
 
 
 // cria novo usuario
 router.post('/novo', function(req, res, next){
-  if(req.body.usuario){
-    var novoUsuario = new Usuario();
-    novoUsuario.email = req.body.usuario.email;
-    novoUsuario.senha = req.body.usuario.senha;
-    novoUsuario.nome = req.body.usuario.nome;
-    novoUsuario.foto = req.body.usuario.foto;
-    novoUsuario.tipo = req.body.usuario.tipo;
+  try{
+    if(req.body){
+      var novoUsuario = new Usuario();
+      novoUsuario.email = req.body.email;
+      novoUsuario.senha = req.body.senha;
+      novoUsuario.nome = req.body.nome;
+      novoUsuario.foto = req.body.foto;
+      novoUsuario.tipo = req.body.tipo;
+      
+      var dataConvertida = new Date(req.body.dataNascimento);
     
-    var dataConvertida = new Date(req.body.usuario.dataNascimento);
-  
-    novoUsuario.dataNascimento = dataConvertida;
+      novoUsuario.dataNascimento = dataConvertida;
 
-    novoUsuario.dataCriacao = new Date();
+      novoUsuario.dataCriacao = new Date();
 
-    novoUsuario.save(function(err, product, numAffected){
-      if(err) {
-        console.log("ERRO AO SALVAR USUARIO", err);
-        return retornaErro(res, "Não foi possível salvar o usuario");
-      }
-      if(numAffected == 1){
-        return retornaSucess(res, "Usuário criado com sucesso!");
-      }
-    });
+      novoUsuario.save(function(err, product, numAffected){
+        if(err) {
+          console.log("ERRO AO SALVAR USUARIO", err);
+          return PadraoRoute.error(res, "Não foi possível salvar o usuario");
+        }
+        if(numAffected == 1){
+          return PadraoRoute.sucess(res, "Usuário criado com sucesso!");  
+        }
+        return PadraoRoute.error(res, null);
+      });
+    }else{
+      return PadraoRoute.error(res, "Usuario nao enviado!");
+    }
+  }catch(e){
+    console.log("USER ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
   }
 });
 
-router.post("/vincular", function(res, req, next){
-    return retornaSucess(res, "Usuário vinculado com sucesso!");
+
+/* É usado para retornar uma lista de profissionais que possuem esse email!
+   O usuario ira escolher o que deseja e depois ira chamar o post
+ */
+router.get("/vincular", function(req, res, next){
+  try{
+    Usuario.find(
+      {
+        email:new RegExp('^'+ req.query.email+ '$', 'i'),
+        tipo:1
+      }, function(err, pacientes){
+        if(err){
+          console.log("ERRO: FIND VINCULAR", err);
+          return PadraoRoute.error(res, "Não foi possível buscar os pacientes!");
+        }
+        if(pacientes != null && pacientes.length > 0){
+          return PadraoRoute.sucess(res, pacientes);
+        }
+        console.log("ERRO: VINCULAR");
+        return PadraoRoute.error(res, "Não existem pacientes com o email buscado");
+    });
+  }catch(e){
+    console.log("ERRO",e);
+    return PadraoRoute.error(res, e);
+  }
 });
 
-
-function retornaErro(res, mensagem){
-  return res.json({status:400, data:mensagem});
-}
-function retornaSucess(res, data){
-  return res.json({status:200, data:data});
-}
+router.put("/", function(req, res, next){
+  try{
+    Usuario.findById(req.body._id, function(err, usuarios){
+        if(err){
+            console.log("USER ROUTE - ERROR - FIND USUARIO TIPO", err);
+            return PadraoRoute.error(res, "Erro ao buscar os usuarios");
+        }
+        return PadraoRoute.sucess(res, usuarios);
+    });
+  }catch(e){
+    console.log("USER ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
+  }
+});
 module.exports = router;

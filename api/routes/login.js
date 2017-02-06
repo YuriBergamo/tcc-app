@@ -5,30 +5,31 @@
 var express = require('express');
 var router = express.Router();
 var Usuario = require('../models/Usuario');
+var PadraoRoute= require('./padrao_route');
 
 // login usuario
 router.post('/', function(req, res, next){
-  if(req.body.login){
-    Usuario.findOne({"email":req.body.login.email, "senha":req.body.login.senha}, function(err, usuario){
-        if(err){
-          console.log("erro login", err);
-          return retornaErro(res, "Servidor indisponível no momento");
-        }
-        if(usuario){
-            return retornaSucess(res, usuario);
-        }
-        return retornaErro(res, "Email ou senha inválidos!");
-        
-    });
+  try{
+    if(req.body){
+      Usuario.findOne({"email":req.body.email, "senha":req.body.senha}, function(err, usuario){
+          if(err){
+            console.log("LOGIN ROUTE - ERROR - FIND ONE ", err);
+            return PadraoRoute.error(res, "Servidor indisponível no momento");
+          }
+          if(usuario){
+              return PadraoRoute.sucess(res, usuario);
+          }
+          return PadraoRoute.error(res, "Email ou senha inválidos!");
+      });
+    }else{
+        return PadraoRoute.error(res, "Não foi enviado o login! ");  
+    }
+  }catch(e){
+    console.log("LOGIN ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
   }
+  
 });
-
-function retornaErro(res, mensagem){
-  return res.json({status:400, data:mensagem});
-}
-function retornaSucess(res, data){
-  return res.json({status:200, data:data});
-}
 
 module.exports = router;
 
