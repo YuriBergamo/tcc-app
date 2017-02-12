@@ -9,6 +9,9 @@ var padrao = {
     },
     "sucess":function(res, data){
         return res.json({status:200, data:data});
+    },
+    "unauthorized": function(res){
+        return res.json({status:404, data:"Não autorizado!"});
     }
 }
 

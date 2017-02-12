@@ -17,6 +17,11 @@ router.post('/', function(req, res, next){
             return PadraoRoute.error(res, "Servidor indisponível no momento");
           }
           if(usuario){
+              //gera a session
+              session = req.session;
+              session.user = usuario.email;
+              session.tipo = usuario.tipo;
+              console.log("SESSION", session);
               return PadraoRoute.sucess(res, usuario);
           }
           return PadraoRoute.error(res, "Email ou senha inválidos!");
@@ -30,6 +35,7 @@ router.post('/', function(req, res, next){
   }
   
 });
+
 
 module.exports = router;
 
