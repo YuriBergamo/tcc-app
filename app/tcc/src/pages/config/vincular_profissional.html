@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar color="green">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancelar();">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Vincular Profissional</ion-title>    
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item class="item-login" style="margin-bottom: 3%;">
+        <ion-input type="email" [(ngModel)]="emailProfissional" placeholder="Email do profissional"></ion-input>
+        <button ion-button outline item-right icon-left (click)="procurarProfissional();">
+            <ion-icon name="search"></ion-icon>
+            Procurar
+        </button>
+    </ion-item>
+    <ion-list>
+        <ion-card *ngFor="let profissional of listaProfissionais">
+            <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getImagem(profissional)">
+            <ion-card-content>
+                <ion-col>
+                    <ion-card-title style="text-align: center;">
+                        {{profissional.nome}}
+                    </ion-card-title>
+                    <p style="text-align: center;">
+                        {{profissional.email}}
+                    </p>
+                </ion-col>                
+                <ion-col>
+                    <button ion-button clear color="blue" icon-left (click)="vincular(profissional)">
+                        <ion-icon name='open' style="margin-right: 5px;"></ion-icon>
+                        Vincular
+                    </button>
+                </ion-col>            
+            </ion-card-content>                        
+        </ion-card>
+    </ion-list>        
+</ion-content>

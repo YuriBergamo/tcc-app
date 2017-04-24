@@ -1,0 +1,56 @@
+    <ion-header>
+  <div class="background-faixa" ></div>
+  <ion-navbar color="primary">
+    <ion-title>Configurações</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item class="item item-thumbnail-left" style="margin-bottom: 5%;">
+            <ion-avatar item-left>
+                <img [src]="getAvatar(usuarioLogado)">
+            </ion-avatar>
+            <h2>{{usuarioLogado.nome}}</h2>             
+        </ion-item>
+        <ion-item>        
+             <ion-label>Usar S.O.S</ion-label>
+             <ion-toggle checked="false"></ion-toggle>             
+        </ion-item>
+        <ion-item>        
+            <ion-label>Permitir notificações</ion-label>
+             <ion-toggle checked="false"></ion-toggle>              
+        </ion-item>
+        <ion-item>        
+            <ion-label>Permitir criar agendamentos</ion-label>
+            <ion-toggle checked="false"></ion-toggle>             
+        </ion-item>
+        <ion-item>        
+              <button ion-item icon-left (click)="logout();">
+                  <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
+                    Logout
+            </button>
+        </ion-item>         
+    </ion-list>
+
+    <button ion-item *ngIf="usuarioLogado.profissional == null" icon-left (click)="vincular();">
+            <ion-icon name='open' style="margin-right: 5px;"></ion-icon>
+            Vincular profissional
+    </button>
+    <ion-card *ngIf="usuarioLogado.profissional != null">
+        <ion-card-header color="primary" style="margin-top:5px;">
+            Profissional Vinculado
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-avatar item-left>
+                    <img [src]="getAvatar(usuarioLogado.profissional)" style="">
+                </ion-avatar>
+                <h2>{{usuarioLogado.profissional.nome}}</h2>
+            </ion-item>
+            
+        </ion-card-content>        
+    </ion-card>
+    
+
+
+</ion-content>

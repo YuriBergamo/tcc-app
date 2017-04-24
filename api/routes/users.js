@@ -26,6 +26,29 @@ router.get('/', function(req, res, next) {
   }
 });
 
+
+/* retorna uma lista de todos os pacientes ativos do profissional */
+router.get('/pacientes/:id', function(req, res, next) {
+  try{      
+      console.log("user id", req.session.userId);
+      if(req.session){
+          Usuario.find({profissional:req.params.id, ativo:true}, function(err, pacientes){
+            if(err){
+              console.log("USER ROUTE - ERROR - FIND PACIENTES", err);
+              return PadraoRoute.error(res, "Erro ao buscar os pacientes");
+              }            
+            return PadraoRoute.sucess(res, pacientes);
+          });
+      }else{
+          return PadraoRoute.unauthorized(res);
+      }
+      
+  }catch(e){
+    console.log("USER ROUTE - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
+  }
+});
+
 /* retorna uma lista com todos os usuarios de um determinado tipo */
 router.get('/tipo/:tipo', function(req, res, next) {
   try{
@@ -51,40 +74,36 @@ router.get('/tipo/:tipo', function(req, res, next) {
 // cria novo usuario
 router.post('/novo', function(req, res, next){
   try{
-    session = req.session;
-    if(session.user){
-      if(req.body){
-        var novoUsuario = new Usuario();
-        novoUsuario.email = req.body.email;
-        novoUsuario.senha = req.body.senha;
-        novoUsuario.nome = req.body.nome;
-        novoUsuario.foto = req.body.foto;
-        novoUsuario.tipo = req.body.tipo;
-        
-        var dataConvertida = new Date(req.body.dataNascimento);
+    if(req.body){
+      //TODO colocar teste para verificar email já cadastrado
+      var novoUsuario = new Usuario();
+      novoUsuario.email = req.body.email;
+      novoUsuario.senha = req.body.senha;
+      novoUsuario.nome = req.body.nome;
+      novoUsuario.foto = req.body.foto;
+      novoUsuario.tipo = req.body.tipo;
       
-        novoUsuario.dataNascimento = dataConvertida;
-
-        novoUsuario.dataCriacao = new Date();
-
-        novoUsuario.save(function(err, product, numAffected){
-          if(err) {
-            console.log("ERRO AO SALVAR USUARIO", err);
-            return PadraoRoute.error(res, "Não foi possível salvar o usuario");
-          }
-          if(numAffected == 1){
-            return PadraoRoute.sucess(res, "Usuário criado com sucesso!");  
-          }
-          return PadraoRoute.error(res, null);
-        });
-
-      }else{
-        return PadraoRoute.error(res, "Usuario nao enviado!");
-      }
-    }else{
-        return PadraoRoute.unauthorized(res);
-    }
+      //var dataConvertida = new Date(req.body.dataNascimento);
     
+      novoUsuario.dataNascimento = new Date();
+
+      novoUsuario.dataCriacao = new Date();
+      novoUsuario.ativo= true;
+
+      novoUsuario.save(function(err, product, numAffected){
+        if(err) {
+          console.log("ERRO AO SALVAR USUARIO", err);
+          return PadraoRoute.error(res, "Não foi possível salvar o usuario");
+        }
+        if(numAffected == 1){
+          return PadraoRoute.sucess(res, "Usuário criado com sucesso!");  
+        }
+        return PadraoRoute.error(res, null);
+      });
+
+    }else{
+      return PadraoRoute.error(res, "Usuario nao enviado!");
+    }
   }catch(e){
     console.log("USER ROUTE - ERROR - EXCEPTION", e);
     return PadraoRoute.error(res, null);
@@ -95,29 +114,91 @@ router.post('/novo', function(req, res, next){
 /* É usado para retornar uma lista de profissionais que possuem esse email!
    O usuario ira escolher o que deseja e depois ira chamar o post
  */
-router.get("/vincular", function(req, res, next){
+router.get("/buscarProfissional", function(req, res, next){
+  try{        
+    Usuario.find(
+      {
+        email:new RegExp('^'+ req.query.email+ '$', 'i'),
+        tipo:1,
+        ativo:true
+      }, function(err, profissionais){
+        if(err){
+          console.log("ERRO: FIND VINCULAR", err);
+          return PadraoRoute.error(res, "Não foi possível buscar os pacientes!");
+        }
+        return PadraoRoute.sucess(res, profissionais);                
+    });    
+    
+  }catch(e){
+    console.log("ERRO",e);
+    return PadraoRoute.error(res, e);
+  }
+});
+
+router.post("/vincularProfissional", function(req, res, next){
   try{
-    session = req.session;
-    if(session.user){
-      Usuario.find(
-        {
-          email:new RegExp('^'+ req.query.email+ '$', 'i'),
-          tipo:1
-        }, function(err, pacientes){
-          if(err){
-            console.log("ERRO: FIND VINCULAR", err);
-            return PadraoRoute.error(res, "Não foi possível buscar os pacientes!");
-          }
-          console.log("PACIENTES",req.query.email, pacientes);
-          if(pacientes != null && pacientes.length > 0){
-            return PadraoRoute.sucess(res, pacientes);
-          }
-          console.log("ERRO: VINCULAR");
-          return PadraoRoute.error(res, "Não existem pacientes com o email buscado");
-      });
-    }else{
-        return PadraoRoute.unauthorized(res);
-    }
+    Usuario.findById({'_id':req.body.idUsuario}, function(err, usuario){
+        if(usuario){
+          //vincular id
+          //retornar a busca com o populate
+          usuario.profissional = req.body.idProfissional;
+          usuario.save(function(err, product, numAffected){
+            if(err) return PadraoRoute.error(res, "Erro ao buscar usuario vinculado!");
+            
+            Usuario.findById({
+                _id:usuario._id
+              })
+              .populate('profissional')
+              .exec(function(err, usuarioComProfissional){
+                  if(err){
+                    return PadraoRoute.error(res, "Erro ao buscar usuario vinculado!");
+                  }
+                  if(usuarioComProfissional){
+                      console.log("VINCULAR PROFISSIONAL OK!");
+                      return PadraoRoute.sucess(res, usuarioComProfissional);                  
+                  }
+              });
+          });
+          
+        }else{
+          return PadraoRoute.error(res, "Erro ao vincular profissional!");
+        }                    
+    });     
+    
+  }catch(e){
+    console.log("ERRO",e);
+    return PadraoRoute.error(res, e);
+  }
+});
+
+router.post("/desvincularProfissional", function(req, res, next){
+  try{
+    Usuario.findById({'_id':req.body.idUsuario}, function(err, usuario){
+        if(usuario){
+          //vincular id
+          //retornar a busca com o populate
+          usuario.profissional = null;
+          usuario.save(function(err, product, numAffected){
+            if(err) return PadraoRoute.error(res, "Erro ao buscar usuario desvincular!");
+            
+            Usuario.findById({
+                _id:usuario._id
+              })              
+              .exec(function(err, usuarioDesvinculado){
+                  if(err){
+                    return PadraoRoute.error(res, "Erro ao buscar usuario desvinculado!");
+                  }
+                  if(usuarioDesvinculado){
+                      console.log("DESVINCULAR PROFISSIONAL OK!");
+                      return PadraoRoute.sucess(res, usuarioDesvinculado);                  
+                  }
+              });
+          });
+          
+        }else{
+          return PadraoRoute.error(res, "Erro ao desvincular profissional!");
+        }                    
+    });     
     
   }catch(e){
     console.log("ERRO",e);
@@ -144,4 +225,29 @@ router.put("/", function(req, res, next){
     return PadraoRoute.error(res, null);
   }
 });
+
+router.post("/buscar/session", function(req, res, next){
+  try{
+    console.log("SESSION!");
+    session = req.session;
+    if(session.user){
+      Usuario.findOne({
+          email:session.user
+        })
+        .populate('profissional')
+        .exec(function(err, usuarioComProfissional){
+            if(err){
+              return PadraoRoute.error(res, "Erro ao buscar usuario logado!");
+            }
+            if(usuarioComProfissional){
+                return PadraoRoute.sucess(res, usuarioComProfissional);                  
+            }
+      });
+    }                                         
+  }catch(e){
+    console.log("ERRO",e);
+    return PadraoRoute.error(res, e);
+  }
+});
+
 module.exports = router;

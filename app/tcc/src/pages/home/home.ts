@@ -15,7 +15,8 @@ export class HomePage {
   public buscarProximaImg(){
     let retorno = "assets/img/noticia1.jpg";
     return retorno;
-
   }
+
+  
 
 }

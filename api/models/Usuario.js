@@ -20,7 +20,7 @@ var usuarioSchema = new Schema({
     numeroSOS:String,
     emailSOS:String,
     diasSemanaSOS:[String],
-    profissional:String,
+    profissional:{type:Schema.Types.ObjectId, ref:'Usuario'},
     endereco:String
 
 });

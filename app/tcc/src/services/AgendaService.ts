@@ -26,7 +26,7 @@ export class AgendaService extends PadraoService{
         return super.get(url);
     }
 
-    public gravarAgendamento(agenda:Agenda){
+    public gravarAgendamento(agenda){
         let url= "agendamentos";
         return super.post(agenda, url);
     }

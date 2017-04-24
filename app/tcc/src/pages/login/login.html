@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+        <img class="img-login" src="assets/img/logo.png">
+        <!--<label class="title-login">iKiddy</label>-->
+  </ion-navbar>
+  <div style="height: 10px; background: #59bdbb;" ></div>
+</ion-header>
+
+<ion-content padding>
+    <p *ngIf="submitError != null" style="color: #ea6153; margin-left: 30%;">{{submitError}}</p>
+    <ion-item class="item-login">
+        <ion-label stacked>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item class="item-login">
+        <ion-label stacked>Senha</ion-label>
+        <ion-input type="password" [(ngModel)]="senha"></ion-input>
+    </ion-item>
+    <button ion-button large outline color="green" style="margin-left: 15%; width: 70%; margin-top:10px;" (click)="logar()" >Logar</button>
+    <button ion-button clear full color="red" (click)="criarNovaConta()" >Não possui conta?</button>
+</ion-content>

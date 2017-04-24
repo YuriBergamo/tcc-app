@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
+import {NativeStorage} from 'ionic-native';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { LoginComponent } from '../pages/login/login';
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = TabsPage;
+  public rootPage = LoginComponent;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
@@ -17,6 +19,15 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      // NativeStorage.getItem("user").then(
+      //   function(usuarioLogado){
+      //     if(usuarioLogado){
+      //       //existe
+      //       this.rootPage = TabsPage;
+      //     }
+      //   }
+      // )
     });
   }
 }
