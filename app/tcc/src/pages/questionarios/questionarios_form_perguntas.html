@@ -1,0 +1,50 @@
+<div class="modal">
+    <ion-header>
+        <ion-navbar color="red">
+            <ion-buttons start>
+            <button ion-button icon-only (click)="cancelar();">
+                <ion-icon name="close"></ion-icon>
+            </button>
+            </ion-buttons>
+            <ion-buttons end>
+            <button ion-button (click)="salvar();">
+                Salvar
+            </button>
+            </ion-buttons>
+            <ion-title>Editar Pergunta</ion-title>
+        </ion-navbar>
+    </ion-header>
+
+    <ion-content>
+        <ion-item>
+            <ion-label stacked>Pergunta</ion-label>
+            <ion-input type="text" [(ngModel)]="pergunta.pergunta"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Obrigatório</ion-label>
+            <ion-toggle [(ngModel)]="pergunta.obrigatorio"></ion-toggle>
+        </ion-item>        
+        <ion-item>
+            <ion-label stacked>Tipo de Resposta</ion-label>
+            <ion-select [(ngModel)]="pergunta.tipoResposta">
+                <ion-option value="Simples">Simples</ion-option>
+                <ion-option value="Multipla">Multipla Escolha</ion-option>
+            </ion-select>                      
+        </ion-item>
+        <ion-item *ngIf="pergunta.tipoResposta == 'Multipla'">
+            <button ion-button outline item-right icon-left (click)="addResposta();">
+                <ion-icon name="add"></ion-icon>
+                Adicionar Resposta Possível
+            </button>
+        </ion-item>
+        
+        <ion-list>
+            <ng-container *ngIf="pergunta.tipoResposta == 'Multipla'">
+                <ion-item  *ngFor="let resposta of pergunta.respostaPossiveis" >
+                    <ion-label>{{resposta}}</ion-label>
+                </ion-item>    
+            </ng-container>        
+        </ion-list>
+             
+    </ion-content>
+</div>

@@ -1,49 +1,47 @@
-<ion-header>
-  <ion-navbar color="green">
-    <ion-buttons start>
-      <button ion-button icon-only (click)="cancelar();">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>Criar nova conta</ion-title>
-  </ion-navbar>
-</ion-header>
-
-
-<ion-content padding>
-    <p *ngIf="submitError != null" style="color: #ea6153;">{{submitError}}</p>
-    <ion-item class="item-login">
-        <ion-label stacked>Nome</ion-label>
-        <ion-input type="text" [(ngModel)]="novoUsuario.nome"></ion-input>
-    </ion-item>
-    <ion-item class="item-login">
-        <ion-label stacked>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="novoUsuario.email"></ion-input>
-    </ion-item>
-    <ion-item class="item-login">
-        <ion-label stacked>Confirmação de Email</ion-label>
-        <ion-input type="email" [(ngModel)]="emailConfirmacao"></ion-input>
-    </ion-item>
-    <ion-item class="item-login">
-        <ion-label stacked>Senha</ion-label>
-        <ion-input type="password" [(ngModel)]="novoUsuario.senha"></ion-input>
-    </ion-item>
-    <ion-item class="item-login">
-        <ion-label stacked>Confirmação de Senha</ion-label>
-        <ion-input type="password" [(ngModel)]="senhaConfirmacao"></ion-input>
-    </ion-item>
-    <ion-item class="item-login">
-        <ion-label>Tipo de Usuário</ion-label>
-        <ion-select [(ngModel)]="novoUsuario.tipo">
-            <ion-option value="1">Dentista</ion-option>
-            <ion-option value="2">Responsável</ion-option>
-        </ion-select>                
-    </ion-item>    
-    
-    <button ion-button block (click)="criarUsuario();" style="margin-top: 5%;">
-        <ion-icon name="add" style="margin-right: 5px;"></ion-icon>Criar Usuário
-    </button>
-    
+<div class="modal">
+    <ion-header>
+        <ion-navbar color="green">
+            <ion-buttons start>
+            <button ion-button icon-only (click)="cancelar();">
+                <ion-icon name="close"></ion-icon>
+            </button>
+            </ion-buttons>
+            <ion-title>Nova Conta</ion-title>
+        </ion-navbar>
+    </ion-header>
+    <ion-content padding>   
+        <p *ngIf="submitError != null" style="color: #ea6153;">{{submitError}}</p>
+        <ion-item class="item-login">
+            <ion-label stacked>Nome</ion-label>
+            <ion-input type="text" [(ngModel)]="novoUsuario.nome"></ion-input>
+        </ion-item>
+        <ion-item class="item-login">
+            <ion-label stacked>Email</ion-label>
+            <ion-input type="email" [(ngModel)]="novoUsuario.email"></ion-input>
+        </ion-item>
+        <ion-item class="item-login">
+            <ion-label stacked>Confirmação de Email</ion-label>
+            <ion-input type="email" [(ngModel)]="emailConfirmacao"></ion-input>
+        </ion-item>
+        <ion-item class="item-login">
+            <ion-label stacked>Senha</ion-label>
+            <ion-input type="password" [(ngModel)]="novoUsuario.senha"></ion-input>
+        </ion-item>
+        <ion-item class="item-login">
+            <ion-label stacked>Confirmação de Senha</ion-label>
+            <ion-input type="password" [(ngModel)]="senhaConfirmacao"></ion-input>
+        </ion-item>
+        <ion-item class="item-login">
+            <ion-label>Tipo de Usuário</ion-label>
+            <ion-select [(ngModel)]="novoUsuario.tipo">
+                <ion-option value="1">Dentista</ion-option>
+                <ion-option value="2">Responsável</ion-option>
+            </ion-select>                
+        </ion-item>    
         
-    
-</ion-content>
+        <button ion-button block (click)="criarUsuario();" style="margin-top: 5%;">
+            <ion-icon name="add" style="margin-right: 5px;"></ion-icon>Criar Usuário
+        </button>                
+    </ion-content>
+</div>
+

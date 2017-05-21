@@ -5,6 +5,7 @@ import {AgendaComponent} from "../agenda/agenda";
 import {SosComponent} from "../sos/sos";
 import {ConfiUserComponent} from "../config/config_user";
 import {PacienteComponent} from "../pacientes/paciente";
+import {QuestionariosListaComponent} from "../questionarios/questionarios_lista";
 import {Storage} from "@ionic/storage";
 import {Usuario} from "../../models/Usuario";
 import {Tab} from "../../models/Tab";
@@ -29,7 +30,7 @@ export class TabsPage {
           this.tabs = [];
           if(this.usuarioLogado.tipo == "1"){
             //profissional            
-            this.tabs.push(new Tab("Questionarios", SosComponent, "filing"));
+            this.tabs.push(new Tab("Questionarios", QuestionariosListaComponent, "filing"));
             this.tabs.push(new Tab("Pacientes", PacienteComponent, "people"));
             this.tabs.push(new Tab("Configuração", ConfiUserComponent, "settings"));          
           }else{

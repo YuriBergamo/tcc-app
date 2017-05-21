@@ -1,0 +1,30 @@
+<ion-header>
+  <div class="background-faixa" ></div>
+  <ion-navbar color="primary">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="salvar();">
+        Salvar
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-item>
+      <ion-label stacked>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="questionario.nome"></ion-input>
+  </ion-item>
+  <ion-list reorder="true" (ionItemReorder)="reorderItem($event)">
+    <ion-item *ngFor="let p of questionario.perguntas" (click)="showOptions(p);">          
+          <ion-input type="text" [(ngModel)]="p.pergunta" placeholder="Pergunta?"></ion-input>
+          <ion-label stacked>Tipo de Resposta</ion-label>
+          <ion-select [(ngModel)]="p.tipoResposta">
+              <ion-option value="Simples">Simples</ion-option>
+              <ion-option value="Multipla">Multipla Escolha</ion-option>
+          </ion-select>           
+    </ion-item>    
+  </ion-list>  
+  <ion-fab bottom right>
+    <button color="accent" ion-fab (click)="addPergunta()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>  
+</ion-content>

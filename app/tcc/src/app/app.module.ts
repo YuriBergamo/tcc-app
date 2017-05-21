@@ -14,6 +14,9 @@ import {CreateUserComponent} from "../pages/login/createUser";
 import {ConfiUserComponent} from "../pages/config/config_user";
 import {VincularProfissionalComponent} from "../pages/config/vincular_profissional";
 import {PacienteComponent} from "../pages/pacientes/paciente";
+import {QuestionariosListaComponent} from "../pages/questionarios/questionarios_lista";
+import {QuestionariosFormComponent} from "../pages/questionarios/questionarios_form";
+import {QuestionariosFormPerguntasComponent} from "../pages/questionarios/questionarios_form_perguntas";
 
 //services
 import {NoticiasSerice} from '../services/NoticiasService';
@@ -35,7 +38,10 @@ import {PacienteService} from '../services/PacienteService';
     CreateUserComponent,
     ConfiUserComponent,
     VincularProfissionalComponent,
-    PacienteComponent
+    PacienteComponent,
+    QuestionariosListaComponent,
+    QuestionariosFormComponent,
+    QuestionariosFormPerguntasComponent
   ],
   imports: [
     HttpModule,
@@ -53,7 +59,10 @@ import {PacienteService} from '../services/PacienteService';
     CreateUserComponent,
     ConfiUserComponent,
     VincularProfissionalComponent,
-    PacienteComponent
+    PacienteComponent,
+    QuestionariosListaComponent,
+    QuestionariosFormComponent,
+    QuestionariosFormPerguntasComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

@@ -58,8 +58,7 @@ export class PacienteComponent{
                 }
             },
             {
-                text: 'Desvincular',
-                role: 'cancel',
+                text: 'Desvincular',                
                 handler: () => {
                     let loader = this.loadingCtrl.create({
                         content: "Desvinculando...",            
