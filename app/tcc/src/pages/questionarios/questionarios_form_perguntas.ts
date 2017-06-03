@@ -78,4 +78,9 @@ export class QuestionariosFormPerguntasComponent{
         });
         alert.present();
     }
+
+    removerResposta(resposta){
+        let index = this.pergunta.respostaPossiveis.indexOf(resposta);
+        this.pergunta.respostaPossiveis.splice(index, 1);
+    }
 }

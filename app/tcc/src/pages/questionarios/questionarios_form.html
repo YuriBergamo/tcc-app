@@ -1,5 +1,5 @@
 <ion-header>
-  <div class="background-faixa" ></div>
+  <div class="background-faixa-verde" ></div>
   <ion-navbar color="primary">
     <ion-title>{{title}}</ion-title>
     <ion-buttons end>
@@ -10,13 +10,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-item>
+   <p *ngIf="error != null" style="color: #ea6153; margin-left: 2%;">{{erro}}</p>
+  <ion-item style="margin-bottom: 2%;">
       <ion-label stacked>Nome</ion-label>
       <ion-input type="text" [(ngModel)]="questionario.nome"></ion-input>
   </ion-item>
   <ion-list reorder="true" (ionItemReorder)="reorderItem($event)">
-    <ion-item *ngFor="let p of questionario.perguntas" (click)="showOptions(p);">          
-          <ion-input type="text" [(ngModel)]="p.pergunta" placeholder="Pergunta?"></ion-input>
+    <ion-item *ngFor="let p of questionario.perguntas" (longPress)="showOptions(p);">          
+          <ion-input type="text" [(ngModel)]="p.pergunta" placeholder="Pergunta?" autofocus></ion-input>
           <ion-label stacked>Tipo de Resposta</ion-label>
           <ion-select [(ngModel)]="p.tipoResposta">
               <ion-option value="Simples">Simples</ion-option>

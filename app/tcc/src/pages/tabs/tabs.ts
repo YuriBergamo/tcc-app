@@ -30,13 +30,13 @@ export class TabsPage {
           this.tabs = [];
           if(this.usuarioLogado.tipo == "1"){
             //profissional            
-            this.tabs.push(new Tab("Questionarios", QuestionariosListaComponent, "filing"));
-            this.tabs.push(new Tab("Pacientes", PacienteComponent, "people"));
-            this.tabs.push(new Tab("Configuração", ConfiUserComponent, "settings"));          
+            this.tabs.push(new Tab("Questionarios", QuestionariosListaComponent, "filing", "green"));
+            this.tabs.push(new Tab("Pacientes", PacienteComponent, "people", "blue"));
+            this.tabs.push(new Tab("Configuração", ConfiUserComponent, "settings", "red"));          
           }else{
-            this.tabs.push(new Tab("Home", HomePage, "home"));            
-            this.tabs.push(new Tab("SOS", SosComponent, "medkit"));
-            this.tabs.push(new Tab("Configuração", ConfiUserComponent, "settings"));          
+            this.tabs.push(new Tab("Home", HomePage, "home", "green"));            
+            this.tabs.push(new Tab("SOS", SosComponent, "medkit", "blue"));
+            this.tabs.push(new Tab("Configuração", ConfiUserComponent, "settings", "red"));          
             
           }
 

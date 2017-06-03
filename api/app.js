@@ -15,6 +15,8 @@ var login = require('./routes/login');
 var tutorial = require('./routes/tutorial');
 var logout = require('./routes/logout');
 var news = require('./routes/news');
+var questionarios = require('./routes/questionarios');
+var pacientes = require('./routes/pacientes');
 
 var app = express();
 
@@ -50,6 +52,8 @@ app.use('/login', login);
 app.use('/tutorial', tutorial);
 app.use('/logout', logout);
 app.use('/news', news);
+app.use('/questionarios', questionarios);
+app.use('/pacientes', pacientes);
   
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,46 @@
+    <ion-header>
+  <div class="background-faixa-azul" ></div>
+  <ion-navbar color="blue">
+    <ion-title>Perfil</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getImagem()">
+        <ion-card-content>
+            <ion-col>
+                <ion-card-title style="text-align: center;">
+                    {{paciente.nome}}
+                </ion-card-title>                
+            </ion-col>           
+            <ion-col>
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Email</ion-label>
+                    <ion-input type="text" [(ngModel)]="paciente.email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Telefone</ion-label>
+                    <ion-input type="text" [(ngModel)]="paciente.telefone"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Endereço</ion-label>
+                    <ion-input type="text" [(ngModel)]="paciente.endereco"></ion-input>
+                </ion-item>
+            </ion-col>                 
+        </ion-card-content>                        
+    </ion-card>
+    <ion-list inset>
+        <ion-list-header>
+            Questionários
+        </ion-list-header>
+        <ion-item *ngFor="let questionario of questionarios">
+            <h1>{{questionario.questionario.nome}}</h1>
+            <p item-right>{{questionario.dataResposta}}</p>            
+        </ion-item>
+    </ion-list>
+    <ion-fab bottom right>
+        <button color="blue" ion-fab (click)="addQuestionario()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+</ion-content>

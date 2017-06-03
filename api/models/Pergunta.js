@@ -4,9 +4,9 @@ var Schema = mongoose.Schema;
 var perguntaSchema = new Schema({
     pergunta:String,
     tipoResposta:String,
-    respostaPossiveis:[String],
-    dataCriacao:Date,
-    obrigatoria:Boolean
+    respostaPossiveis:[String],    
+    obrigatoria:Boolean,
+    ordem:Number
 });
 
 

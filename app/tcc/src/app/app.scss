@@ -15,10 +15,21 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-.background-faixa{
+.background-faixa-verde{
   background: color($colors, dark_primary, base) !important;
   height: 5px;
 }
+
+.background-faixa-azul{
+  background: color($colors, dark_blue, base) !important;
+  height: 5px;
+}
+
+.background-faixa-vermelha{
+  background: color($colors, dark_red, base) !important;
+  height: 5px;
+}
+
 
 .sos-fundo{
 

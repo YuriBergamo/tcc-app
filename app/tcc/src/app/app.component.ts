@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, Events, App } from 'ionic-angular';
 import {NativeStorage} from 'ionic-native';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -13,7 +13,9 @@ import { LoginComponent } from '../pages/login/login';
 export class MyApp {
   public rootPage = LoginComponent;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform,
+              public events:Events,
+              public app:App) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -28,6 +30,11 @@ export class MyApp {
       //     }
       //   }
       // )
+
+      this.events.subscribe('logout', () => {                      
+          //this.navController.setRoot(LoginComponent);
+          this.app.getRootNav().setRoot(LoginComponent);
+      });   
     });
   }
 }

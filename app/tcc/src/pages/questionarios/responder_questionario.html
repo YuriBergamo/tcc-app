@@ -1,0 +1,33 @@
+<ion-header>
+  <div class="background-faixa-vermelha" ></div>
+  <ion-navbar color="red">
+    <ion-title>{{questionario.nome}}</ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="!visualizando" (click)="salvar();">
+        Salvar
+      </button>     
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <p *ngIf="error != null" style="color: #ea6153; margin-left: 2%;">{{error}}</p>  
+  
+  <ng-container *ngFor="let resposta of respostaQuestionario.respostas">
+        <ion-label stacked>{{resposta.pergunta}}<span *ngIf="resposta.obrigatorio">*</span></ion-label>
+        <ion-item *ngIf="resposta.tipoPergunta == 'Simples'">
+            
+            <ion-input  type="text" 
+                        [(ngModel)]="resposta.resposta" 
+                        placeholder="Resposta" >
+            </ion-input>
+        </ion-item>
+      
+        <ion-list *ngIf="resposta.tipoPergunta == 'Multipla'" radio-group [(ngModel)]="resposta.resposta">
+            <ion-item *ngFor="let respostaPossivel of resposta.respostaPossiveis">
+                <ion-label>{{respostaPossivel}}</ion-label>
+                <ion-radio [value]="respostaPossivel"></ion-radio>
+            </ion-item>               
+        </ion-list>
+  </ng-container>    
+  
+</ion-content>

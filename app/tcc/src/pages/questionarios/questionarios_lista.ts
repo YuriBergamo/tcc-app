@@ -1,11 +1,16 @@
 import {Component, OnInit} from "@angular/core";
 import {Usuario} from "../../models/Usuario";
-import {PacienteService} from '../../services/PacienteService';
+import {QuestionarioService} from '../../services/QuestionarioService';
 import {UsuarioService} from '../../services/UsuarioService';
 import {Storage} from "@ionic/storage";
 import {DomSanitizer} from '@angular/platform-browser';
 import {QuestionariosFormComponent} from './questionarios_form';
-import {ModalController, LoadingController,ActionSheetController, NavController} from 'ionic-angular';
+import {ResponderQuestionarioComponent} from './responder_questionario';
+import {ModalController, 
+        LoadingController,
+        ActionSheetController, 
+        NavController,
+        Events} from 'ionic-angular';
 
 @Component({
     selector:"questionariosLista",
@@ -18,24 +23,43 @@ export class QuestionariosListaComponent{
     public listaAuxQuestionarios = [];
     public usuarioLogado;
     ngOnInit(){
-        // let loader = this.loadingCtrl.create({
-        //     content: "Buscando questionários...",            
-        // });
-        // loader.present();
         this.storage.get('user').then((user) => {            
             this.usuarioLogado = JSON.parse(user);
-            //fazer o service para buscar os questionarios cadastrados
-        });                               
+            this.fetchQuestionarios();                        
+        });                                       
     }
 
-    constructor(public pacienteService:PacienteService, 
+    private fetchQuestionarios(){
+        let loader = this.loadingCtrl.create({
+            content: "Buscando questionários...",            
+        });
+        loader.present();
+        this.questionarioService.buscarQuestionarios(this.usuarioLogado._id).subscribe(
+                (sucess)=>{
+                    this.listaQuestionarios = sucess;
+                    this.listaAuxQuestionarios = this.listaQuestionarios;
+                    loader.dismiss();
+                },
+                (err)=>{
+                    console.log("ERR", err);
+                    loader.dismiss();
+                }
+            )
+    }
+
+    constructor(public questionarioService:QuestionarioService, 
                 public usuarioService:UsuarioService, 
                 private modalController:ModalController,
                 public storage: Storage,
                 private sanitizer:DomSanitizer,
                 public loadingCtrl: LoadingController,
                 public actionSheetController:ActionSheetController,
-                public navController:NavController){                    
+                public navController:NavController,
+                public events:Events){                    
+
+            this.events.subscribe('questionario:new', (questionario) => {            
+                this.callBackQuestionarios();
+            });        
                 
     }
 
@@ -44,16 +68,26 @@ export class QuestionariosListaComponent{
             title: questionario.nome,
             buttons: [
             {
-                text: 'Editar',
+                text: 'Pré-visualizar',
                 handler: () => {
-                    console.log('Perfil');
+                     this.navController.push(ResponderQuestionarioComponent, 
+                        {
+                         "usuarioProfissional":this.usuarioLogado,
+                         "questionario":questionario,
+                         "visualizando":true
+                        }
+                    ).then();
                 }
             },
             {
-                text: 'Agendar',
-                role: 'cancel',
+                text: 'Editar',
                 handler: () => {
-                                        
+                     this.navController.push(QuestionariosFormComponent, 
+                        {
+                         "usuario":this.usuarioLogado,
+                         "questionario":questionario
+                        }
+                    ).then();
                 }
             },
             {
@@ -87,6 +121,11 @@ export class QuestionariosListaComponent{
     public addQuestionario(){
         this.navController.push(QuestionariosFormComponent, {"usuario":this.usuarioLogado}).then();
     }
+
+    public callBackQuestionarios(){        
+        this.fetchQuestionarios();
+    }    
+    
 
 
 }

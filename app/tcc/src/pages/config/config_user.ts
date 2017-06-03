@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Usuario} from "../../models/Usuario";
 import {UsuarioService} from '../../services/UsuarioService';
-import {ModalController, NavController} from 'ionic-angular';
+import {ModalController, NavController, Events} from 'ionic-angular';
 import {VincularProfissionalComponent} from './vincular_profissional';
 import {Storage} from "@ionic/storage";
 import {DomSanitizer} from '@angular/platform-browser';
@@ -26,7 +26,8 @@ export class ConfiUserComponent{
                 private modalController:ModalController,
                 public storage: Storage,
                 private sanitizer:DomSanitizer,
-                private navController:NavController){                    
+                private navController:NavController,
+                private events:Events){                    
 
         
     }
@@ -55,7 +56,8 @@ export class ConfiUserComponent{
             (sucess)=>{
                 //remove do local storage
                 console.log("logout", sucess);
-                this.navController.setRoot(LoginComponent);
+                //this.navController.setRoot(LoginComponent);
+                this.events.publish("logout");
             }
         )
     }

@@ -27,28 +27,6 @@ router.get('/', function(req, res, next) {
 });
 
 
-/* retorna uma lista de todos os pacientes ativos do profissional */
-router.get('/pacientes/:id', function(req, res, next) {
-  try{      
-      console.log("user id", req.session.userId);
-      if(req.session){
-          Usuario.find({profissional:req.params.id, ativo:true}, function(err, pacientes){
-            if(err){
-              console.log("USER ROUTE - ERROR - FIND PACIENTES", err);
-              return PadraoRoute.error(res, "Erro ao buscar os pacientes");
-              }            
-            return PadraoRoute.sucess(res, pacientes);
-          });
-      }else{
-          return PadraoRoute.unauthorized(res);
-      }
-      
-  }catch(e){
-    console.log("USER ROUTE - ERROR - EXCEPTION", e);
-    return PadraoRoute.error(res, null);
-  }
-});
-
 /* retorna uma lista com todos os usuarios de um determinado tipo */
 router.get('/tipo/:tipo', function(req, res, next) {
   try{

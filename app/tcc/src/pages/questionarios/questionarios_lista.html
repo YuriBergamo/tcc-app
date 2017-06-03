@@ -1,5 +1,5 @@
 <ion-header>
-  <div class="background-faixa" ></div>
+  <div class="background-faixa-verde" ></div>
   <ion-navbar color="primary">
     <ion-title>Questionários</ion-title>
   </ion-navbar>
@@ -9,7 +9,7 @@
   <ion-list>
     <ion-item *ngFor="let q of listaQuestionarios" (click)="showOptions(q)">
         <h2 left>{{q.nome}}</h2>
-        <p right>{{q.dataCriacao}}</p>
+        <p right>{{q.dataCriacao | date:'dd/MM/yyyy'}}</p>
     </ion-item>    
   </ion-list>
   <ion-fab bottom right>

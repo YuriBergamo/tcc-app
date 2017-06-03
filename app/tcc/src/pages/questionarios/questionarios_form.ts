@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Usuario} from "../../models/Usuario";
-import {UsuarioService} from '../../services/UsuarioService';
+import {QuestionarioService} from '../../services/QuestionarioService';
 import {Storage} from "@ionic/storage";
 import {DomSanitizer} from '@angular/platform-browser';
 import {ModalController, 
@@ -8,7 +8,9 @@ import {ModalController,
         ActionSheetController,
         NavController,
         reorderArray,
-        ToastController} from 'ionic-angular';
+        ToastController,
+        Events,
+        NavParams} from 'ionic-angular';
 
 import {Questionario} from "../../models/Questionario";
 import {Pergunta} from "../../models/Pergunta";
@@ -23,22 +25,118 @@ export class QuestionariosFormComponent{
     public usuarioLogado;
     public title:String;    
     public questionario:Questionario;
+    public erro:String; 
+    public editando:Boolean
     ngOnInit(){
-        this.title = "Add Questionários";        
-        this.questionario = new Questionario();
-        this.questionario.perguntas = new Array<Pergunta>();
+        this.editando = false;
+
+        this.usuarioLogado = this.navParms.get('usuario');
+        let questionarioParametro = this.navParms.get('questionario');
+        
+        if(!questionarioParametro){            
+            this.title = "Novo Questionário";        
+            this.questionario = new Questionario();
+            this.questionario.perguntas = new Array<Pergunta>();
+        }else{
+            this.editando = true;
+            this.title = "Editar Questionário";
+            this.questionario = questionarioParametro;            
+        }
+                
+        this.erro = null;
 
     }
 
-    constructor(public usuarioService:UsuarioService, 
+    constructor(public questionarioService:QuestionarioService, 
                 private modalController:ModalController,
                 public storage: Storage,
                 private sanitizer:DomSanitizer,
                 public loadingCtrl: LoadingController,
                 public actionSheetController:ActionSheetController,
                 public navController:NavController,
-                public toastController:ToastController){                    
+                public toastController:ToastController,
+                public events:Events,
+                public navParms:NavParams){                    
                 
+    }
+
+    salvar(){
+        if(!this.questionario.nome || this.questionario.nome == ''){
+            //todo fazer erro na tela
+            this.erro="O questionario deve ter um nome!";            
+            return;
+        }
+
+        if(this.questionario.perguntas == null || this.questionario.perguntas.length ==0){
+            //todo fazer erro na tela
+            this.erro="O questionario deve ter ao menos uma pergunta!";
+            return;
+        }
+
+        this.questionario.perguntas.forEach(pergunta=>{
+            if(pergunta.tipoResposta === "Multipla"){
+                if(pergunta.respostaPossiveis == null || pergunta.respostaPossiveis.length == 0){
+                    this.erro = pergunta.pergunta + " deve ter respostas!";
+                    return;
+                }
+            }
+        });
+        
+        let loader = this.loadingCtrl.create({
+            content: "Salvando Questionário...",            
+        });
+        loader.present();
+        if(!this.editando){
+            this.questionarioService.salvarQuestionario(this.usuarioLogado._id, this.questionario).subscribe(
+                (sucess)=>{
+                    console.log("SUCESS", sucess);
+                    //add na lista de questionarios                
+                    this.events.publish("questionario:new", this.questionario);
+                    //exibir toast
+                    let toast = this.toastController.create({
+                            message: "Questionário criado!",
+                            duration: 3000,
+                            position:"bottom"
+                    });
+                    toast.present();
+                    loader.dismiss();
+                    //voltar pra listagem
+                    this.navController.pop();
+                },
+                (error)=>{
+                    //exibir erro
+                    console.log("ERROR", error);
+                    loader.dismiss();
+                }
+            )
+        }else{
+            //fazer o put
+            this.questionarioService.editarQuestionario(this.questionario).subscribe(
+                (sucess)=>{
+                    console.log("SUCESS", sucess);
+                    //add na lista de questionarios                
+                    this.events.publish("questionario:new", this.questionario);
+                    //exibir toast
+                    let toast = this.toastController.create({
+                            message: "Questionário editado com sucesso!",
+                            duration: 3000,
+                            position:"bottom"
+                    });
+                    toast.present();
+                    loader.dismiss();
+                    //voltar pra listagem
+                    this.navController.pop();
+                },
+                (error)=>{
+                    //exibir erro
+                    console.log("ERROR", error);
+                    loader.dismiss();
+                }
+            )
+            //apagar o questionario e fazer outro com o mesmo id
+        }
+        
+        
     }
 
     reorderItem(indexes){

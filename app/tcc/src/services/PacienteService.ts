@@ -6,7 +6,7 @@ import {Usuario} from '../models/Usuario';
 @Injectable()
 export class PacienteService extends PadraoService{
 
-    private finalURL = "usuarios/pacientes";
+    private finalURL = "pacientes";
 
     constructor(public http:Http){
         super(http);
@@ -22,14 +22,27 @@ export class PacienteService extends PadraoService{
                                 if(res.json().status != 200){
                                     return null;
                                 }                                
-                                // let lista = new Array<Usuario>();
-                                // for (var pac in res.json().data) {
-                                //     lista.push(new Usuario(pac));
-                                // }
+                        
                                 return res.json().data;
                             }
                         }
                     ).catch(this.handleError);
-    }   
+    }
+
+    public buscarQuestionarios(idPaciente){
+        let url = this.finalURL+"/"+idPaciente+"/questionarios";
+        return super.getMap(url)
+                    .map(
+                        res=>{
+                            if(res.json()){
+                                console.log("RESPOSTA", res.json());
+                                if(res.json().status != 200){
+                                    return null;
+                                }                                                                
+                                return res.json().data;
+                            }
+                        }
+                    ).catch(this.handleError);
+    }      
 
 }

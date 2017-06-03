@@ -16,7 +16,7 @@ export class PadraoService{
     private headers;
     private options;
 
-    private URL_PADRAO = "http://localhost:3001/";
+    private URL_PADRAO = "http://192.168.0.102:3001/";
     constructor(public http:Http){
         this.headers = new Headers({ 'Content-Type': 'application/json' });
         this.options = new RequestOptions({ headers: this.headers });
@@ -41,6 +41,14 @@ export class PadraoService{
         let urlFinal = this.URL_PADRAO + finalUrl;
         console.log("urlFinal", urlFinal);
         return this.http.post(urlFinal, JSON.stringify(body), this.options)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+    }
+
+    public put(body,finalUrl){
+        let urlFinal = this.URL_PADRAO + finalUrl;
+        console.log("urlFinal", urlFinal);
+        return this.http.put(urlFinal, JSON.stringify(body), this.options)
                     .map(this.extractData)
                     .catch(this.handleError);
     }

@@ -34,7 +34,7 @@
         <ion-item *ngIf="pergunta.tipoResposta == 'Multipla'">
             <button ion-button outline item-right icon-left (click)="addResposta();">
                 <ion-icon name="add"></ion-icon>
-                Adicionar Resposta Possível
+                Adicionar Resposta
             </button>
         </ion-item>
         
@@ -42,6 +42,9 @@
             <ng-container *ngIf="pergunta.tipoResposta == 'Multipla'">
                 <ion-item  *ngFor="let resposta of pergunta.respostaPossiveis" >
                     <ion-label>{{resposta}}</ion-label>
+                    <button ion-button clear item-right icon-only (click)="removerResposta(resposta);">
+                        <ion-icon name="close"></ion-icon>
+                    </button>                    
                 </ion-item>    
             </ng-container>        
         </ion-list>

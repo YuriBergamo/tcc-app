@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
-
+var Usuario = require('./Usuario');
 var Schema = mongoose.Schema;
 
 var questionarioSchema = new Schema({
-    perguntas:[{type:Schema.Types.ObjectId, ref:'Pergunta', require:true}],
+    perguntas:[],
     ativo:Boolean,
-    usuarioCriacao:{type:Schema.Types.ObjectId, ref:'Usuario', require:true},
+    nome:String,
+    usuario:{type:Schema.Types.ObjectId, ref:'Usuario'},
     dataCriacao:Date
 });
 

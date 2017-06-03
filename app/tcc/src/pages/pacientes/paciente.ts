@@ -2,10 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {Usuario} from "../../models/Usuario";
 import {PacienteService} from '../../services/PacienteService';
 import {UsuarioService} from '../../services/UsuarioService';
+import {PerfilPacienteComponent} from './perfil_paciente';
 import {ModalController} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import {DomSanitizer} from '@angular/platform-browser';
-import { LoadingController,ActionSheetController } from 'ionic-angular';
+import { LoadingController,ActionSheetController, NavController } from 'ionic-angular';
 
 @Component({
     selector:"paciente",
@@ -43,7 +44,8 @@ export class PacienteComponent{
                 public storage: Storage,
                 private sanitizer:DomSanitizer,
                 public loadingCtrl: LoadingController,
-                public actionSheetController:ActionSheetController){                    
+                public actionSheetController:ActionSheetController,
+                public navController:NavController){                    
                 
     }
 
@@ -54,7 +56,7 @@ export class PacienteComponent{
             {
                 text: 'Perfil',
                 handler: () => {
-                    console.log('Perfil');
+                    this.navController.push(PerfilPacienteComponent, {"usuarioLogado":this.usuarioLogado, "paciente":pac}).then();
                 }
             },
             {

@@ -17,12 +17,18 @@ import {PacienteComponent} from "../pages/pacientes/paciente";
 import {QuestionariosListaComponent} from "../pages/questionarios/questionarios_lista";
 import {QuestionariosFormComponent} from "../pages/questionarios/questionarios_form";
 import {QuestionariosFormPerguntasComponent} from "../pages/questionarios/questionarios_form_perguntas";
+import {ResponderQuestionarioComponent} from "../pages/questionarios/responder_questionario";
+import {PerfilPacienteComponent} from "../pages/pacientes/perfil_paciente";
 
 //services
 import {NoticiasSerice} from '../services/NoticiasService';
 import {LoginService} from '../services/LoginService';
 import {UsuarioService} from '../services/UsuarioService';
 import {PacienteService} from '../services/PacienteService';
+import {QuestionarioService} from '../services/QuestionarioService';
+
+//util
+import {PressDirective} from '../util/PressDirective';
 
 
 
@@ -41,7 +47,10 @@ import {PacienteService} from '../services/PacienteService';
     PacienteComponent,
     QuestionariosListaComponent,
     QuestionariosFormComponent,
-    QuestionariosFormPerguntasComponent
+    QuestionariosFormPerguntasComponent,
+    PressDirective,
+    ResponderQuestionarioComponent,
+    PerfilPacienteComponent
   ],
   imports: [
     HttpModule,
@@ -62,7 +71,9 @@ import {PacienteService} from '../services/PacienteService';
     PacienteComponent,
     QuestionariosListaComponent,
     QuestionariosFormComponent,
-    QuestionariosFormPerguntasComponent
+    QuestionariosFormPerguntasComponent,
+    ResponderQuestionarioComponent,
+    PerfilPacienteComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
@@ -70,7 +81,8 @@ import {PacienteService} from '../services/PacienteService';
     NoticiasSerice,
     LoginService,
     UsuarioService,
-    PacienteService
+    PacienteService,
+    QuestionarioService
   ]
 })
 export class AppModule {}
