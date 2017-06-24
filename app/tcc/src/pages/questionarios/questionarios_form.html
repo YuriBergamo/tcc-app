@@ -13,7 +13,7 @@
    <p *ngIf="error != null" style="color: #ea6153; margin-left: 2%;">{{erro}}</p>
   <ion-item style="margin-bottom: 2%;">
       <ion-label stacked>Nome</ion-label>
-      <ion-input type="text" [(ngModel)]="questionario.nome"></ion-input>
+      <ion-input type="text" [(ngModel)]="questionario.nome" autofocus></ion-input>
   </ion-item>
   <ion-list reorder="true" (ionItemReorder)="reorderItem($event)">
     <ion-item *ngFor="let p of questionario.perguntas" (longPress)="showOptions(p);">          

@@ -1,7 +1,12 @@
-    <ion-header>
+<ion-header>
   <div class="background-faixa-azul" ></div>
   <ion-navbar color="blue">
     <ion-title>Perfil</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-left (click)="editar();">
+            <ion-icon name="create"></ion-icon> Editar
+        </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -36,8 +41,8 @@
             Questionários
         </ion-list-header>
         <ion-item *ngFor="let questionario of questionarios">
-            <h1>{{questionario.questionario.nome}}</h1>
-            <p item-right>{{questionario.dataResposta}}</p>            
+            <h4>{{questionario.questionario.nome}}</h4>
+            <p item-right>{{questionario.dataResposta | date:'dd/MM/yyyy'}}</p>            
         </ion-item>
     </ion-list>
     <ion-fab bottom right>

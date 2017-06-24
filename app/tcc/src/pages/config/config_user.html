@@ -5,34 +5,44 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-    <ion-list>
-        <ion-item class="item item-thumbnail-left" style="margin-bottom: 5%;">
-            <ion-avatar item-left>
-                <img [src]="getAvatar(usuarioLogado)">
-            </ion-avatar>
-            <h2>{{usuarioLogado.nome}}</h2>             
-        </ion-item>
-        <ion-item>        
-             <ion-label>Usar S.O.S</ion-label>
-             <ion-toggle checked="false"></ion-toggle>             
-        </ion-item>
-        <ion-item>        
-            <ion-label>Permitir notificações</ion-label>
-             <ion-toggle checked="false"></ion-toggle>              
-        </ion-item>
-        <ion-item>        
-            <ion-label>Permitir criar agendamentos</ion-label>
-            <ion-toggle checked="false"></ion-toggle>             
-        </ion-item>
-        <ion-item>        
-              <button ion-item icon-left (click)="logout();">
-                  <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
-                    Logout
-            </button>
-        </ion-item>         
-    </ion-list>
+    <ion-card>
+        <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getAvatar()">
+        <ion-card-content>
+            <ion-col>
+                <ion-card-title style="text-align: center;">
+                    {{usuarioLogado.nome}}
+                </ion-card-title>                
+            </ion-col>           
+            <ion-col>
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Email</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.email"></ion-input>
+                </ion-item>
 
-    <button ion-item *ngIf="usuarioLogado.profissional == null" icon-left (click)="vincular();">
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Telefone</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.telefone"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Endereço</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.endereco"></ion-input>
+                </ion-item>
+                <ion-item>        
+                    <ion-label>Atender S.O.S</ion-label>
+                    <ion-toggle checked="false"></ion-toggle>             
+                </ion-item>                
+            </ion-col>                 
+        </ion-card-content>                        
+    </ion-card>    
+
+        
+    <button ion-item icon-left block (click)="logout();">
+        <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
+        Logout
+    </button>
+    <hr/>
+    <button ion-item block *ngIf="usuarioLogado.profissional == null" icon-left (click)="vincular();">
             <ion-icon name='open' style="margin-right: 5px;"></ion-icon>
             Vincular profissional
     </button>

@@ -1,0 +1,19 @@
+<div class="modal">
+    <ion-header>
+        <ion-navbar color="blue">
+            <ion-buttons start>
+                <button ion-button icon-only (click)="cancelar();">
+                    <ion-icon name="close"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>{{title}}</ion-title>
+        </ion-navbar>
+    </ion-header>
+    <ion-content padding>
+        <ion-list inset>
+            <ion-item *ngFor="let item of listaItens" (click)="selecionarItem(item);">
+                <p>{{item.nome}}</p>
+            </ion-item>
+        </ion-list>                                     
+    </ion-content>
+</div>

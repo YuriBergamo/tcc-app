@@ -17,6 +17,7 @@ var logout = require('./routes/logout');
 var news = require('./routes/news');
 var questionarios = require('./routes/questionarios');
 var pacientes = require('./routes/pacientes');
+var agenda = require('./routes/agenda');
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use('/logout', logout);
 app.use('/news', news);
 app.use('/questionarios', questionarios);
 app.use('/pacientes', pacientes);
+app.use('/agendamentos', agenda);
   
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,29 +1,37 @@
 <ion-header>
-  <div class="background-faixa-verde" ></div>
-  <ion-navbar color="primary">
+  <div class="background-faixa-vermelha" ></div>
+  <ion-navbar color="red">
     <ion-title>Agenda</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
   <ion-list>
+    <ion-list-header>
+      Filtros
+    </ion-list-header>
     <ion-item>
       <ion-label stacked>Data</ion-label>
       <ion-datetime displayFormat="DD/MM/YYYY"  pickerFormat="DD/MM/YYYY" [(ngModel)]="dataSelecionada" (ionChange)="atualizarAgendamentos()"></ion-datetime>
-      <button margin-left="5px;" ion-button item-right color="accent" icon-left round (click)="exibirTodos()">
+      <button margin-left="5px;" ion-button item-right color="blue" icon-left round (click)="exibirTodos()">
         <ion-icon name="open" ></ion-icon>
         Todos
       </button>
     </ion-item>
   </ion-list>
-  <ion-list>
-    <ion-item *ngFor="let agenda of listaAgendamentosPorData">
-      <h2><ion-icon color="accent" name="create" item-left></ion-icon>Consulta/Retorno</h2>
-      <h3> <ion-icon color="accent" name="pin" item-left></ion-icon>Dr. João</h3>
-      <p>Descrição da consulta</p>
-      <ion-note item-right>10/10/2017</ion-note><!--{{agenda.agenda.dataInicioAgenda | date:'dd/MM/yyyy'}}</ion-note> -->
-    </ion-item>
+  <ion-list inset>
+    <ion-item *ngFor="let agenda of listaAgendamentosPorData" [ngStyle]="getStatusStyle(agenda)" (click)="showOptions(agenda)">
+      <ion-avatar *ngIf="agenda.usuario.foto" item-left>
+        <img [src]="getImagem(agenda)">
+      </ion-avatar>
+      
+      <h2><ion-icon color="dark_blue" name="create" item-left></ion-icon>{{agenda.tipo}}</h2>
+      <h3 *ngIf="agenda.profissional.nome"> <ion-icon color="dark_blue" name="happy" item-left></ion-icon>{{agenda.profissional.nome}}</h3>
+      <h3 *ngIf="agenda.usuario.nome"> <ion-icon color="dark_blue" name="happy" item-left></ion-icon>{{agenda.usuario.nome}}</h3>
+      <p>{{agenda.observacao}}</p>
+      <ion-note item-right>{{agenda.data | date:'dd/MM/yyyy'}}</ion-note><ion-note>{{agenda.hora}}</ion-note>
+    </ion-item>    
   </ion-list>
   <ion-fab bottom right>
-    <button color="accent" ion-fab (click)="addAgendamento()"><ion-icon name="add"></ion-icon></button>
+    <button color="blue" ion-fab (click)="addAgendamento()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 </ion-content>

@@ -12,7 +12,7 @@ import {LoginComponent} from '../login/login';
     templateUrl:'config_user.html'
 })
 
-export class ConfiUserComponent{
+export class ConfigUserComponent{
 
     public usuarioLogado:Usuario = new Usuario();
 

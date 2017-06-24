@@ -170,7 +170,7 @@ export class QuestionariosFormComponent{
                 handler: () => {
                     let index= this.questionario.perguntas.indexOf(p);
                     this.questionario.perguntas.splice(index, 1);
-                     let toast = this.toastController.create({
+                    let toast = this.toastController.create({
                         message: "Pergunta excluida com sucesso!",
                         duration: 3000,
                         position:"bottom"

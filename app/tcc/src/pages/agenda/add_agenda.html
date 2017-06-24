@@ -1,0 +1,81 @@
+<ion-header>
+  <div class="background-faixa-vermelha"></div>
+  <ion-navbar color="red">
+    <ion-title >Novo</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="salvar()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-item>
+      <ion-icon name="create" item-left color="dark_red"></ion-icon>
+      <ion-label>Tipo</ion-label>
+      <ion-select [(ngModel)]="agendaAtual.tipo">
+            <ion-option value="SIMPLES">Consulta Simples</ion-option>
+            <ion-option value="ANAMNESE">Anamnese Inicial</ion-option>
+            <ion-option value="TRATAMENTO">Tratamento</ion-option>
+            <ion-option value="ACOMPANHAMENTO">Acompanhamento</ion-option>
+            <ion-option value="RETORNO">Retorno</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="medkit" item-left color="dark_red"></ion-icon>
+      <ion-label>Urgência</ion-label>
+      <ion-select [(ngModel)]="agendaAtual.nivelUrgencia">
+            <ion-option value="1">Alto</ion-option>
+            <ion-option value="2">Médio</ion-option>
+            <ion-option value="3">Normal</ion-option>
+            <ion-option value="4">Baixo</ion-option>
+      </ion-select>     
+    </ion-item>       
+
+    <ion-item *ngIf="isProfissional">
+      <ion-icon name="pin" item-left color="dark_red"></ion-icon>
+      <ion-label stacked >Questionário</ion-label>
+      <ion-input type="text" 
+                  [(ngModel)]="agendaAtual.questionario.nome" 
+                  disabled="true" 
+                  placeholder="Selecionar Questionário"
+                  (click)="selecionarItem('questionario')"></ion-input>    
+    </ion-item>
+
+    <ion-item *ngIf="isProfissional">
+      <ion-icon name="happy" item-left color="dark_red"></ion-icon>
+      <ion-label stacked >Paciente *</ion-label>
+      <ion-input type="text" 
+                  [(ngModel)]="agendaAtual.usuario.nome" 
+                  disabled="true" 
+                  placeholder="Selecionar Paciente"
+                  (click)="selecionarItem('paciente')"></ion-input>    
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="calendar" item-left color="dark_red"></ion-icon>
+      <ion-label stacked>Data *</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="agendaAtual.data"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="time" item-left color="dark_red"></ion-icon>
+      <ion-label stacked>Hora *</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="agendaAtual.hora"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="paper" item-left color="dark_red"></ion-icon>
+      <ion-label stacked >Observação</ion-label>
+      <ion-textarea rows="5" [(ngModel)]="agendaAtual.observacao"></ion-textarea>
+    </ion-item>
+
+    <ion-item></ion-item>
+  </ion-list>
+
+</ion-content>

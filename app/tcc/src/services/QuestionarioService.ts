@@ -34,7 +34,7 @@ export class QuestionarioService extends PadraoService{
     }
 
     public responderQuestionario(resposta){
-        let url = this.finalURL + "/responder";
+        let url = this.finalURL + "/responder/novo";
         return super.post(resposta, url);
     }    
 }

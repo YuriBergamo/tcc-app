@@ -1,0 +1,53 @@
+<ion-header>
+  <div class="background-faixa-azul"></div>
+  <ion-navbar color="blue">
+    <ion-title >Registrar</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="salvar()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-icon name="calendar" item-left color="dark_red"></ion-icon>
+            <ion-label stacked>Data *</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="agendaAtual.data" disabled></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-icon name="time" item-left color="dark_red"></ion-icon>
+            <ion-label stacked>Hora *</ion-label>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="agendaAtual.hora" disabled></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-icon name="paper" item-left color="dark_red"></ion-icon>
+            <ion-label stacked >Observação</ion-label>
+            <ion-textarea rows="5" [(ngModel)]="agendaAtual.observacao" ></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-card *ngIf="agendaAtual.questionario">        
+        <ion-card-content>
+            <ion-col>
+                <ion-card-title style="text-align: center;">
+                    {{agendaAtual.questionario.nome}}
+                </ion-card-title>
+                <p style="text-align: center;">
+                    {{statusQuestionario}}
+                </p>
+            </ion-col>                
+            <ion-col>
+                <button ion-button block color="blue" icon-left (click)="responderQuestionario()">
+                    <ion-icon name='open' style="margin-right: 5px;"></ion-icon>
+                    Responder
+                </button>
+            </ion-col>            
+        </ion-card-content>                        
+    </ion-card>
+
+</ion-content>

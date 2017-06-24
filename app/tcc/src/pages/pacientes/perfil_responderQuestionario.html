@@ -1,0 +1,17 @@
+<ion-header>
+  <div class="background-faixa-azul" ></div>
+  <ion-navbar color="blue">
+    <ion-title>Responder Questionário</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-item>
+        <ion-label style="color:#f44336" stacked>Data</ion-label>
+        <ion-input type="date" [(ngModel)]="resposta.dataResposta"></ion-input>
+    </ion-item>
+    <ion-list inset>    
+        <ion-item *ngFor="let q of questionarios" (click)="responder(q)">
+            <h2 left>{{q.nome}}</h2>            
+        </ion-item>    
+    </ion-list>
+</ion-content>

@@ -1,0 +1,51 @@
+<ion-header>
+  <div class="background-faixa-vermelha" ></div>
+  <ion-navbar color="red">
+    <ion-title>Configurações</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-left (click)="editar();">
+            <ion-icon name="create"></ion-icon> Salvar Alterações
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getAvatar()">
+        <ion-card-content>
+            <ion-col>
+                <ion-card-title style="text-align: center;">
+                    {{usuarioLogado.nome}}
+                </ion-card-title>                
+            </ion-col>           
+            <ion-col>
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Email</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Telefone</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.telefone"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label style="color:#f44336" stacked>Endereço</ion-label>
+                    <ion-input type="text" [(ngModel)]="usuarioLogado.endereco"></ion-input>
+                </ion-item>
+                <ion-item>        
+                    <ion-label>Atender S.O.S</ion-label>
+                    <ion-toggle checked="false"></ion-toggle>             
+                </ion-item>                
+            </ion-col>                 
+        </ion-card-content>                        
+    </ion-card>    
+
+        
+    <button ion-item icon-left block (click)="logout();">
+        <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
+        Logout
+    </button>
+    
+
+</ion-content>

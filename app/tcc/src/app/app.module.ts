@@ -11,7 +11,7 @@ import { AgendaComponent } from '../pages/agenda/agenda';
 import {SosComponent} from "../pages/sos/sos";
 import {LoginComponent} from "../pages/login/login";
 import {CreateUserComponent} from "../pages/login/createUser";
-import {ConfiUserComponent} from "../pages/config/config_user";
+import {ConfigUserComponent} from "../pages/config/config_user";
 import {VincularProfissionalComponent} from "../pages/config/vincular_profissional";
 import {PacienteComponent} from "../pages/pacientes/paciente";
 import {QuestionariosListaComponent} from "../pages/questionarios/questionarios_lista";
@@ -19,6 +19,10 @@ import {QuestionariosFormComponent} from "../pages/questionarios/questionarios_f
 import {QuestionariosFormPerguntasComponent} from "../pages/questionarios/questionarios_form_perguntas";
 import {ResponderQuestionarioComponent} from "../pages/questionarios/responder_questionario";
 import {PerfilPacienteComponent} from "../pages/pacientes/perfil_paciente";
+import {PerfilResponderQuestionarioComponent} from "../pages/pacientes/perfil_responderQuestionario";
+import {AddAgendaComponent} from "../pages/agenda/add_agenda";
+import {RegistroAgendaComponent} from "../pages/agenda/registro_agenda";
+import {ConfigProfComponent} from "../pages/config/config_prof";
 
 //services
 import {NoticiasSerice} from '../services/NoticiasService';
@@ -26,9 +30,11 @@ import {LoginService} from '../services/LoginService';
 import {UsuarioService} from '../services/UsuarioService';
 import {PacienteService} from '../services/PacienteService';
 import {QuestionarioService} from '../services/QuestionarioService';
+import {AgendaService} from '../services/AgendaService';
 
 //util
 import {PressDirective} from '../util/PressDirective';
+import {SelectModalComponent} from "../pages/util/modal_select";
 
 
 
@@ -42,7 +48,7 @@ import {PressDirective} from '../util/PressDirective';
     SosComponent,
     LoginComponent,
     CreateUserComponent,
-    ConfiUserComponent,
+    ConfigUserComponent,
     VincularProfissionalComponent,
     PacienteComponent,
     QuestionariosListaComponent,
@@ -50,7 +56,12 @@ import {PressDirective} from '../util/PressDirective';
     QuestionariosFormPerguntasComponent,
     PressDirective,
     ResponderQuestionarioComponent,
-    PerfilPacienteComponent
+    PerfilPacienteComponent,
+    PerfilResponderQuestionarioComponent,
+    AddAgendaComponent,
+    SelectModalComponent,
+    RegistroAgendaComponent,
+    ConfigProfComponent
   ],
   imports: [
     HttpModule,
@@ -66,14 +77,19 @@ import {PressDirective} from '../util/PressDirective';
     SosComponent,
     LoginComponent,
     CreateUserComponent,
-    ConfiUserComponent,
+    ConfigUserComponent,
     VincularProfissionalComponent,
     PacienteComponent,
     QuestionariosListaComponent,
     QuestionariosFormComponent,
     QuestionariosFormPerguntasComponent,
     ResponderQuestionarioComponent,
-    PerfilPacienteComponent
+    PerfilPacienteComponent,
+    PerfilResponderQuestionarioComponent,
+    AddAgendaComponent,
+    SelectModalComponent,
+    RegistroAgendaComponent,
+    ConfigProfComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
@@ -82,7 +98,8 @@ import {PressDirective} from '../util/PressDirective';
     LoginService,
     UsuarioService,
     PacienteService,
-    QuestionarioService
+    QuestionarioService,
+    AgendaService
   ]
 })
 export class AppModule {}

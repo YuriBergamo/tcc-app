@@ -2,12 +2,14 @@ import {Component, OnInit} from "@angular/core";
 import {ViewController,
         NavController,
         NavParams, 
-        ToastController} from 'ionic-angular';
+        ToastController,
+        Events} from 'ionic-angular';
 import {PacienteService} from '../../services/PacienteService';
 import {UsuarioService} from '../../services/UsuarioService';
 import {DomSanitizer} from '@angular/platform-browser';
 import { LoadingController } from 'ionic-angular';
 import {Storage} from "@ionic/storage";
+import {PerfilResponderQuestionarioComponent} from "./perfil_responderQuestionario";
 
 
 @Component({
@@ -30,18 +32,22 @@ export class PerfilPacienteComponent{
                 public loadingCtrl: LoadingController,
                 private sanitizer:DomSanitizer,
                 public toastController:ToastController,
-                public pacienteService:PacienteService){
-            
+                public pacienteService:PacienteService,
+                public events:Events){
+
+            this.events.subscribe('reload_perfil', (questionario) => {
+                console.log("RELOAD");            
+                this.fetchQuestionarios();
+            });  
+                        
             
     }
 
-    ngOnInit(){
+    fetchQuestionarios(){
         let loader = this.loadingCtrl.create({
             content: "Buscando questionarios...",            
         });
         loader.present();
-        this.usuarioLogado = this.navParams.get('usuarioLogado');
-        this.paciente = this.navParams.get('paciente');
         this.pacienteService.buscarQuestionarios(this.paciente._id).subscribe(
             (sucess)=>{
                 this.questionarios = sucess;
@@ -50,7 +56,15 @@ export class PerfilPacienteComponent{
                 
             },
             (error)=>console.log("ERRO PAC", error)
-        );                              
+        ); 
+    }
+
+    ngOnInit(){
+        
+        this.usuarioLogado = this.navParams.get('usuarioLogado');
+        this.paciente = this.navParams.get('paciente');
+        this.fetchQuestionarios();
+                                    
     }
   
 
@@ -59,6 +73,9 @@ export class PerfilPacienteComponent{
     }
 
     public addQuestionario(){
-
+        this.navController.push(PerfilResponderQuestionarioComponent, {
+            "usuarioPaciente":this.paciente,
+            "usuarioLogado":this.usuarioLogado
+        })
     }
 }

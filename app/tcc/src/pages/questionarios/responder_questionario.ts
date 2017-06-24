@@ -5,6 +5,7 @@ import {Questionario} from "../../models/Questionario";
 import {RespostaPergunta} from "../../models/RepostaPergunta";
 import {QuestionarioService} from '../../services/QuestionarioService';
 import {Storage} from "@ionic/storage";
+import {PerfilPacienteComponent} from '../pacientes/perfil_paciente';
 import {ModalController, 
         LoadingController,
         ActionSheetController, 
@@ -25,10 +26,12 @@ export class ResponderQuestionarioComponent{
     @ViewChild(Content) content: Content;
 
     public visualizando:Boolean;
-    public usuarioLogado:Usuario;
+    public usuarioLogado;
     public respostaQuestionario:RespostaQuestionario;
-    public questionario:Questionario;
+    public questionario;
     public error:String;
+    public agenda;
+    public perfil:Boolean = false;
 
     ngOnInit(){
         this.usuarioLogado = this.navParms.get('usuarioProfissional');
@@ -37,24 +40,40 @@ export class ResponderQuestionarioComponent{
         }
         this.visualizando = this.navParms.get("visualizando");
         this.questionario = this.navParms.get("questionario");
+        this.agenda = this.navParms.get("agenda");
 
-        if(this.visualizando){
+        if(this.visualizando || this.agenda != null){
             this.respostaQuestionario = new RespostaQuestionario();
             this.respostaQuestionario.respostas = new Array<RespostaPergunta>();
-            for(var i=0; i< this.questionario.perguntas.length; i++){
-                var pergunta = this.questionario.perguntas[i];
-                var resposta = new RespostaPergunta();
-                resposta.pergunta = pergunta.pergunta;
-                resposta.tipoPergunta = pergunta.tipoResposta;
-                resposta.resposta = "";
-                resposta.obrigatorio = pergunta.obrigatorio;
-                resposta.respostaPossiveis = pergunta.respostaPossiveis;                
-
-                this.respostaQuestionario.respostas.push(resposta);
-
+            if(this.agenda){
+                this.respostaQuestionario.idAgenda = this.agenda._id;
+                this.respostaQuestionario.dataResposta = new Date();
             }            
+            this.geraRespostas();            
+        }else{            
+            //verifica se existe resposta
+            this.respostaQuestionario = this.navParms.get("resposta");
+            if(this.respostaQuestionario){
+                this.respostaQuestionario.respostas = new Array<RespostaPergunta>();
+                this.geraRespostas(); 
+                this.perfil = true;           
+            }
         }
                                                
+    }
+
+    geraRespostas(){
+        for(var i=0; i< this.questionario.perguntas.length; i++){
+            var pergunta = this.questionario.perguntas[i];
+            var resposta = new RespostaPergunta();
+            resposta.pergunta = pergunta.pergunta;
+            resposta.tipoPergunta = pergunta.tipoResposta;
+            resposta.resposta = "";
+            resposta.obrigatorio = pergunta.obrigatorio;
+            resposta.respostaPossiveis = pergunta.respostaPossiveis;                      
+
+            this.respostaQuestionario.respostas.push(resposta);
+        }
     }
 
     constructor(public questionarioService:QuestionarioService, 
@@ -71,7 +90,6 @@ export class ResponderQuestionarioComponent{
 
 
     salvar(){
-
         this.respostaQuestionario.respostas.forEach(resposta=>{
             if(resposta.obrigatorio){
                 if(resposta.resposta == null || resposta.resposta == ""){
@@ -81,10 +99,12 @@ export class ResponderQuestionarioComponent{
                 }
             }
         });
+        
 
-        this.respostaQuestionario.idUsuario = this.usuarioLogado.id;
-        this.respostaQuestionario.idQuestionario = this.questionario.id;
+        this.respostaQuestionario.idUsuario = this.usuarioLogado._id;
+        this.respostaQuestionario.idQuestionario = this.questionario._id;
 
+        console.log("resposta", this.respostaQuestionario);
         let loader = this.loadingCtrl.create({
             content: "Salvando Respostas...",            
         });
@@ -102,7 +122,26 @@ export class ResponderQuestionarioComponent{
                 toast.present();
                 loader.dismiss();
                 //voltar pra listagem
-                this.navController.pop();
+                if(this.perfil){
+                    this.navController.popTo(this.navController.getByIndex(1)).then(
+                        function(sucess){
+                            this.events.publish("reload_perfil", "done");
+                        }
+                    );
+                    
+                    //subscribe    
+                }else{
+                    if(this.agenda){
+                        this.events.publish("registroQuestionario:agenda", "done");                            
+                        this.navController.pop().then();
+                    }else{
+                        this.navController.pop().then();
+                    }
+                        
+                    
+                    
+                }
+                
             },
             (error)=>{
                 //exibir erro
