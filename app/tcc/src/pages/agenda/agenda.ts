@@ -164,4 +164,26 @@ export class AgendaComponent{
       }).then();
   }
 
+  public getStatusAgenda(agenda){
+      if(agenda.tipo == "SIMPLES"){
+          return "Consulta Simples";          
+      }
+
+      if(agenda.tipo == "ANAMNESE"){
+          return "Anamnese Inicial";          
+      }
+
+      if(agenda.tipo == "TRATAMENTO"){
+          return "Tratamento";          
+      }
+
+      if(agenda.tipo == "ACOMPANHAMENTO"){
+          return "Acompanhamento";          
+      }
+
+      if(agenda.tipo == "RETORNO"){
+          return "Retorno";          
+      }
+  }
+
 }

@@ -6,7 +6,7 @@
 </ion-header>
 <ion-content>
     <ion-card>
-        <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getAvatar()">
+        <img style="width: 40%; height: 40%; padding: 2%; margin-left: 30%;" [src]="getAvatar(usuarioLogado)">
         <ion-card-content>
             <ion-col>
                 <ion-card-title style="text-align: center;">
@@ -27,21 +27,11 @@
                 <ion-item>
                     <ion-label style="color:#f44336" stacked>Endereço</ion-label>
                     <ion-input type="text" [(ngModel)]="usuarioLogado.endereco"></ion-input>
-                </ion-item>
-                <ion-item>        
-                    <ion-label>Atender S.O.S</ion-label>
-                    <ion-toggle checked="false"></ion-toggle>             
                 </ion-item>                
             </ion-col>                 
         </ion-card-content>                        
     </ion-card>    
-
-        
-    <button ion-item icon-left block (click)="logout();">
-        <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
-        Logout
-    </button>
-    <hr/>
+    
     <button ion-item block *ngIf="usuarioLogado.profissional == null" icon-left (click)="vincular();">
             <ion-icon name='open' style="margin-right: 5px;"></ion-icon>
             Vincular profissional
@@ -53,14 +43,16 @@
         <ion-card-content>
             <ion-item>
                 <ion-avatar item-left>
-                    <img [src]="getAvatar(usuarioLogado.profissional)" style="">
+                    <img [src]="getAvatar(usuarioLogado.profissional)">
                 </ion-avatar>
                 <h2>{{usuarioLogado.profissional.nome}}</h2>
             </ion-item>
             
         </ion-card-content>        
     </ion-card>
-    
-
-
+    <hr/>    
+    <button ion-item icon-left block (click)="logout();">
+        <ion-icon name='exit' style="margin-right: 5px;"></ion-icon>
+        Logout
+    </button>
 </ion-content>

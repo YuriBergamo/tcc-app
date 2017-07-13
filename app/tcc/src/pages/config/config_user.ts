@@ -43,11 +43,8 @@ export class ConfigUserComponent{
     }
 
     public getAvatar(usuario){
-        if(usuario.foto){
-            return this.sanitizer.bypassSecurityTrustUrl("data:image/png;utf8;base64,"+ usuario.foto);        
-            // if(!retorno){
-            //     retorno = this.sanitizer.bypassSecurityTrustUrl("data:image/png;utf8;base64,"+ usuario.foto);            
-            // }            
+        if(usuario  && usuario.foto){
+            return this.sanitizer.bypassSecurityTrustUrl("data:image/png;utf8;base64,"+ usuario.foto);                    
         }        
     }
 

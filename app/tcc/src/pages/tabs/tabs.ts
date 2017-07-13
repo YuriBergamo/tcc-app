@@ -34,9 +34,7 @@ export class TabsPage {
             this.tabs.push(new Tab("Questionarios", QuestionariosListaComponent, "filing", "green"));
             this.tabs.push(new Tab("Pacientes", PacienteComponent, "people", "blue"));
             this.tabs.push(new Tab("Configuração", ConfigProfComponent, "settings", "red"));          
-          }else{
-            // this.tabs.push(new Tab("Home", HomePage, "home", "green"));            
-            this.tabs.push(new Tab("SOS", SosComponent, "medkit", "blue"));
+          }else{            
             this.tabs.push(new Tab("Configuração", ConfigUserComponent, "settings", "red"));                      
           }
 

@@ -52,8 +52,7 @@ export class ConfigProfComponent{
         this.storage.set('user', null).then(
             (sucess)=>{
                 //remove do local storage
-                console.log("logout", sucess);
-                //this.navController.setRoot(LoginComponent);
+                console.log("logout", sucess);                
                 this.events.publish("logout");
             }
         )
