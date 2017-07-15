@@ -10,16 +10,18 @@ import { LoadingController,
 import {AddAgendaComponent} from "./add_agenda";
 import {AgendaService} from "../../services/AgendaService";
 import {RegistroAgendaComponent} from "./registro_agenda";
+import {AgendaFiltro} from '../util/agenda_filtro';
 
 @Component({
-    selector:"agenda",
-    templateUrl:"agenda.html"
+    selector:"agenda",    
+    templateUrl:"agenda.html",    
 })
 export class AgendaComponent{
 
   public listaAgendamentosPorData = [];
   public dataSelecionada = new Date();
   public usuarioLogado;  
+  public rejeitados= false;
 
   ngOnInit(){
         let loader = this.loadingCtrl.create({
@@ -90,7 +92,21 @@ export class AgendaComponent{
             'border-left':"solid 4px  #4CAF50",
             'margin-bottom': '4px'
           };          
-      }            
+      }
+      if(agenda.status == "RESPONDIDO"){
+          return {
+            'border-left':"solid 4px  #E65100",
+            'margin-bottom': '4px'
+          };          
+      }
+      if(agenda.status == "REJEITADO"){
+          return {
+            'border-left':"solid 4px  #424242",
+            'margin-bottom': '4px',
+            'background-color': '#9E9E9E'
+          };          
+      }      
+
   }
 
   public showOptions(agenda){
@@ -105,8 +121,7 @@ export class AgendaComponent{
 
   public getButtonsOptions(agenda){
       if(this.usuarioLogado.tipo == 1){
-            //profissional
-            //paciente
+            //profissional         
             if(agenda.status == "NENHUM"){                
                 return [
                         {
@@ -138,8 +153,21 @@ export class AgendaComponent{
                                     }
                                 )
                             }
+                        },
+                        {
+                            text: 'Visualizar',
+                            handler: () => {                                
+                                this.registrarAgendamento(agenda, true);
+                            }
                         }        
                     ];
+            }else if(agenda.status == "RESPONDIDO" || agenda.status == "ACEITO" || agenda.status == "REJEITADO"){
+                return [{
+                    text: "Visualizar",
+                    handler: () => {                                
+                        this.registrarAgendamento(agenda, true);
+                    }
+                }];
             }
         }else{
             //paciente
@@ -152,15 +180,30 @@ export class AgendaComponent{
                             }
                         }        
                     ];
+            }
+            if(agenda.status == "REJEITADO" || agenda.status == "RESPONDIDO" || agenda.status == "NENHUM"){
+                return [
+                        {
+                            text: 'Visualizar',
+                            handler: () => {                                
+                                this.registrarAgendamento(agenda, true);
+                            }
+                        }        
+                    ];
             }    
         }      
       
   }
 
-  public registrarAgendamento(agenda){
+  public registrarAgendamento(agenda, visualizar?){
+      let visualizando = visualizar;
+      if(!visualizando){
+          visualizando = false;
+      }
       this.navController.push(RegistroAgendaComponent, {
           "agendaAtual":agenda,
-          "usuarioLogado":this.usuarioLogado          
+          "usuarioLogado":this.usuarioLogado,
+          "visualizar":visualizando          
       }).then();
   }
 

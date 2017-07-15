@@ -40,4 +40,9 @@ export class AgendaService extends PadraoService{
         let url =  this.finalUrl + "aceitar/"+agenda._id;
         return super.post(agenda, url);
     }
+
+    public getRespostas(idAgenda, idQuestionario){
+        let url = this.finalUrl + idAgenda + "/questionario/"+idQuestionario;
+        return super.get(url);
+    }
 }

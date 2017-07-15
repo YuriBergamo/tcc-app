@@ -41,15 +41,19 @@ export class ResponderQuestionarioComponent{
         this.visualizando = this.navParms.get("visualizando");
         this.questionario = this.navParms.get("questionario");
         this.agenda = this.navParms.get("agenda");
+        this.respostaQuestionario = this.navParms.get('respostas');
 
         if(this.visualizando || this.agenda != null){
-            this.respostaQuestionario = new RespostaQuestionario();
-            this.respostaQuestionario.respostas = new Array<RespostaPergunta>();
-            if(this.agenda){
-                this.respostaQuestionario.idAgenda = this.agenda._id;
-                this.respostaQuestionario.dataResposta = new Date();
+            if(!this.respostaQuestionario){
+                this.respostaQuestionario = new RespostaQuestionario();
+                this.respostaQuestionario.respostas = new Array<RespostaPergunta>();
+                if(this.agenda){
+                    this.respostaQuestionario.idAgenda = this.agenda._id;
+                    this.respostaQuestionario.dataResposta = new Date();
+                }            
+                this.geraRespostas();            
             }            
-            this.geraRespostas();            
+            
         }else{            
             //verifica se existe resposta
             this.respostaQuestionario = this.navParms.get("resposta");
@@ -74,7 +78,7 @@ export class ResponderQuestionarioComponent{
 
             this.respostaQuestionario.respostas.push(resposta);
         }
-    }
+    }    
 
     constructor(public questionarioService:QuestionarioService, 
                 private modalController:ModalController,

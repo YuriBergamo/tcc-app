@@ -16,7 +16,8 @@ export class PadraoService{
     private headers;
     private options;
 
-    private URL_PADRAO = "http://192.168.0.103:3001/";
+    // private URL_PADRAO = "http://ec2-52-15-74-62.us-east-2.compute.amazonaws.com:3001/";
+    private URL_PADRAO = "http://localhost:3001/";
     constructor(public http:Http){
         this.headers = new Headers({ 'Content-Type': 'application/json' });
         this.options = new RequestOptions({ headers: this.headers });

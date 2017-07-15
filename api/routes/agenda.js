@@ -14,9 +14,8 @@ router.get('/:id/pacientes', function(req, res, next) {
   try{      
       if(req.session){
           Agenda.find({
-              usuario:req.params.id,
-              status:{$nin:["RESPONDIDO", "REJEITADO"]}
-          }).sort({nivelUrgencia:-1, data:-1, hora:-1})
+              usuario:req.params.id    
+          }).sort({data:-1, hora:-1, nivelUrgencia:-1})
           .populate("profissional questionario")
           .exec(function(err, agendamentos){
               if(err){
@@ -40,9 +39,8 @@ router.get('/:id/profissionais', function(req, res, next) {
   try{      
       if(req.session){
           Agenda.find({
-              profissional:req.params.id,
-              status:"NENHUM"
-          }).sort({nivelUrgencia:-1, data:-1})
+              profissional:req.params.id              
+          }).sort({data:-1, nivelUrgencia:-1})
           .populate("usuario questionario")
           .exec(function(err, agendamentos){
               if(err){
@@ -190,6 +188,31 @@ router.post("/aceitar/:idAgenda", function(req, res, next){
   }
 });
 
+/* retorna as respostas do questionário */
+router.get('/:idAgenda/questionario/:idQuestionario', function(req, res, next) {
+  try{      
+      if(req.session){
+          RespostaQuestionario.findOne({
+              agenda:req.params.idAgenda,
+              questionario:req.params.idQuestionario              
+          })
+          .populate("usuario questionario")
+          .exec(function(err, resposta){
+              if(err){
+                  console.log("AGENDA ROUTE - ERROR - FIND AGENDA RESPOSTA QUESTIONARIO");
+                  return PadraoRoute.error(res, "Erro ao buscar os as respostas dos questionarios");
+              }
+              return PadraoRoute.sucess(res, resposta);
+          })          
+      }else{
+          return PadraoRoute.unauthorized(res);
+      }
+      
+  }catch(e){
+    console.log("AGENDA ROUTE - GET AGENDA PROFISSIONAIS - ERROR - EXCEPTION", e);
+    return PadraoRoute.error(res, null);
+  }
+});
 
 
 

@@ -18,11 +18,12 @@ export class RegistroAgendaComponent{
     public agendaAtual;
     public usuarioLogado;  
     public statusQuestionario:String = "Pendente";
+    public visualizando =false;
 
     ngOnInit(){
         this.agendaAtual = this.navParams.get("agendaAtual");
-        this.usuarioLogado = this.navParams.get("usuarioLogado");        
-                            
+        this.usuarioLogado = this.navParams.get("usuarioLogado");
+        this.visualizando = this.navParams.get("visualizar");                                    
     }
     constructor(public loadingCtrl: LoadingController,
                 public actionSheetController:ActionSheetController,
@@ -74,5 +75,47 @@ export class RegistroAgendaComponent{
             }
         )
     }  
+    public getStatusByAgenda(){
+        if(this.agendaAtual.status == "ACEITO"){
+            return "Aguardando o registro do usuário!";
+        }
+        if(this.agendaAtual.status == "RESPONDIDO"){
+            return "Agendamento respondido!";
+        }
+        if(this.agendaAtual.status == "REJEITADO"){
+            return "Agendamento rejeitado pelo profissional!";
+        }
+    }
+
+    public visualizarQuestionario(){
+        let loader = this.loadingCtrl.create({
+            content: "Buscando respostas do questionario...",            
+        });
+        loader.present();
+
+        this.agendaService.getRespostas(this.agendaAtual._id, this.agendaAtual.questionario._id).subscribe(
+            (sucess)=>{
+                loader.dismiss();                
+                if(this.usuarioLogado.tipo == 1){
+                    this.navController.push(ResponderQuestionarioComponent, {
+                        "usuarioProfissional":this.usuarioLogado,
+                        "questionario":this.agendaAtual.questionario,
+                        "agenda":this.agendaAtual,
+                        "respostas":sucess
+
+                    }).then();
+                }else if(this.usuarioLogado.tipo == 2){
+                    this.navController.push(ResponderQuestionarioComponent, {
+                        "usuarioPaciente":this.usuarioLogado,
+                        "questionario":this.agendaAtual.questionario,
+                        "agenda":this.agendaAtual,
+                        "visualizando":true,
+                        "respostas":sucess
+
+                    }).then();
+                }
+            }
+        )    
+    }
 
 }
